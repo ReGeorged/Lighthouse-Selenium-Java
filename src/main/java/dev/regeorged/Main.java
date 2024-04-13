@@ -1,6 +1,8 @@
 package dev.regeorged;
 
-import dev.regeorged.utils.json.JsonUtil;
+import dev.regeorged.lighthouse.reports.LighthouseResults;
+import dev.regeorged.lighthouse.reports.model.generated.Report;
+import dev.regeorged.lighthouse.reports.model.parser.json.LighthouseReportParser;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -8,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -22,12 +25,14 @@ public class Main {
         String driverUrl = driver.getCurrentUrl();
         driver.manage().window().maximize();
         System.out.println("starting lighthouse report generation");
-        executeCommand(String.format("lighthouse %s  --output=json,html,csv --port=9333 --view", driverUrl), true);
+        executeCommand(String.format("lighthouse %s  --output=json,html,csv --port=9333 ", driverUrl), true);
         System.out.println(
                 "Lighthouse report generated successfully. Check the report in the current directory."
         );
 
-        System.out.println(JsonUtil.readJsonFilesFromDirectory(".").get(0).getFinalDisplayedUrl());
+        List<Report> reports = LighthouseReportParser.parseLighthouseReports(".");
+        LighthouseResults lighthouseResults = new LighthouseResults(reports.get(0));
+        System.out.println(lighthouseResults.getAccessibilityScore() + "is acc score");
 //        driver.quit();
 
     }

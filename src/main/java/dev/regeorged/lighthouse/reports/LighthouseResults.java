@@ -2,13 +2,14 @@ package dev.regeorged.lighthouse.reports;
 
 import dev.regeorged.lighthouse.reports.model.generated.*;
 
+
 public class LighthouseResults {
 
-    private int performanceScore;
-    private int accessibilityScore;
-    private int bestPracticesScore;
-    private int seoScore;
-    private int pwaScore;
+    private Double performanceScore;
+    private Double accessibilityScore;
+    private Double bestPracticesScore;
+    private Double seoScore;
+    private Double pwaScore;
     private FirstMeaningfulPaint firstMeaningfulPaint;
     private FirstContentfulPaint firstContentfulPaint;
     private SpeedIndex speedIndex;
@@ -22,11 +23,11 @@ public class LighthouseResults {
 
 
     public LighthouseResults(Report lighthouseReport) {
-        this.performanceScore = (int) lighthouseReport.getCategories().getPerformance().getScore();
-        this.accessibilityScore = (int) lighthouseReport.getCategories().getAccessibility().getScore();
-        this.bestPracticesScore = (int) lighthouseReport.getCategories().getBestPractices().getScore();
-        this.seoScore = (int) lighthouseReport.getCategories().getSeo().getScore();
-        this.pwaScore = (int) lighthouseReport.getCategories().getPwa().getScore();
+        this.performanceScore = (Double) lighthouseReport.getCategories().getPerformance().getScore();
+        this.accessibilityScore = (Double) lighthouseReport.getCategories().getAccessibility().getScore();
+        this.bestPracticesScore = (Double) lighthouseReport.getCategories().getBestPractices().getScore();
+        this.seoScore = (Double) lighthouseReport.getCategories().getSeo().getScore();
+        this.pwaScore = (Double) lighthouseReport.getCategories().getPwa().getScore();
         this.firstMeaningfulPaint = lighthouseReport.getAudits().getFirstMeaningfulPaint();
         this.firstContentfulPaint = lighthouseReport.getAudits().getFirstContentfulPaint();
         this.speedIndex = lighthouseReport.getAudits().getSpeedIndex();
@@ -39,23 +40,23 @@ public class LighthouseResults {
         this.bootupTime = lighthouseReport.getAudits().getBootupTime();
     }
 
-    public int getPerformanceScore() {
+    public Double getPerformanceScore() {
         return this.performanceScore;
     }
 
-    public int getAccessibilityScore() {
+    public Double getAccessibilityScore() {
         return this.accessibilityScore;
     }
 
-    public int getBestPracticesScore() {
+    public Double getBestPracticesScore() {
         return this.bestPracticesScore;
     }
 
-    public int getSeoScore() {
+    public Double getSeoScore() {
         return this.seoScore;
     }
 
-    public int getPwaScore() {
+    public Double getPwaScore() {
         return this.pwaScore;
     }
 
@@ -99,23 +100,23 @@ public class LighthouseResults {
         return this.bootupTime;
     }
 
-    public void setPerformanceScore(int performanceScore) {
+    public void setPerformanceScore(Double performanceScore) {
         this.performanceScore = performanceScore;
     }
 
-    public void setAccessibilityScore(int accessibilityScore) {
+    public void setAccessibilityScore(Double accessibilityScore) {
         this.accessibilityScore = accessibilityScore;
     }
 
-    public void setBestPracticesScore(int bestPracticesScore) {
+    public void setBestPracticesScore(Double bestPracticesScore) {
         this.bestPracticesScore = bestPracticesScore;
     }
 
-    public void setSeoScore(int seoScore) {
+    public void setSeoScore(Double seoScore) {
         this.seoScore = seoScore;
     }
 
-    public void setPwaScore(int pwaScore) {
+    public void setPwaScore(Double pwaScore) {
         this.pwaScore = pwaScore;
     }
 
@@ -164,11 +165,24 @@ public class LighthouseResults {
         if (!(o instanceof LighthouseResults)) return false;
         final LighthouseResults other = (LighthouseResults) o;
         if (!other.canEqual((Object) this)) return false;
-        if (this.getPerformanceScore() != other.getPerformanceScore()) return false;
-        if (this.getAccessibilityScore() != other.getAccessibilityScore()) return false;
-        if (this.getBestPracticesScore() != other.getBestPracticesScore()) return false;
-        if (this.getSeoScore() != other.getSeoScore()) return false;
-        if (this.getPwaScore() != other.getPwaScore()) return false;
+        final Object this$performanceScore = this.getPerformanceScore();
+        final Object other$performanceScore = other.getPerformanceScore();
+        if (this$performanceScore == null ? other$performanceScore != null : !this$performanceScore.equals(other$performanceScore))
+            return false;
+        final Object this$accessibilityScore = this.getAccessibilityScore();
+        final Object other$accessibilityScore = other.getAccessibilityScore();
+        if (this$accessibilityScore == null ? other$accessibilityScore != null : !this$accessibilityScore.equals(other$accessibilityScore))
+            return false;
+        final Object this$bestPracticesScore = this.getBestPracticesScore();
+        final Object other$bestPracticesScore = other.getBestPracticesScore();
+        if (this$bestPracticesScore == null ? other$bestPracticesScore != null : !this$bestPracticesScore.equals(other$bestPracticesScore))
+            return false;
+        final Object this$seoScore = this.getSeoScore();
+        final Object other$seoScore = other.getSeoScore();
+        if (this$seoScore == null ? other$seoScore != null : !this$seoScore.equals(other$seoScore)) return false;
+        final Object this$pwaScore = this.getPwaScore();
+        final Object other$pwaScore = other.getPwaScore();
+        if (this$pwaScore == null ? other$pwaScore != null : !this$pwaScore.equals(other$pwaScore)) return false;
         final Object this$firstMeaningfulPaint = this.getFirstMeaningfulPaint();
         final Object other$firstMeaningfulPaint = other.getFirstMeaningfulPaint();
         if (this$firstMeaningfulPaint == null ? other$firstMeaningfulPaint != null : !this$firstMeaningfulPaint.equals(other$firstMeaningfulPaint))
@@ -218,11 +232,16 @@ public class LighthouseResults {
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
-        result = result * PRIME + this.getPerformanceScore();
-        result = result * PRIME + this.getAccessibilityScore();
-        result = result * PRIME + this.getBestPracticesScore();
-        result = result * PRIME + this.getSeoScore();
-        result = result * PRIME + this.getPwaScore();
+        final Object $performanceScore = this.getPerformanceScore();
+        result = result * PRIME + ($performanceScore == null ? 43 : $performanceScore.hashCode());
+        final Object $accessibilityScore = this.getAccessibilityScore();
+        result = result * PRIME + ($accessibilityScore == null ? 43 : $accessibilityScore.hashCode());
+        final Object $bestPracticesScore = this.getBestPracticesScore();
+        result = result * PRIME + ($bestPracticesScore == null ? 43 : $bestPracticesScore.hashCode());
+        final Object $seoScore = this.getSeoScore();
+        result = result * PRIME + ($seoScore == null ? 43 : $seoScore.hashCode());
+        final Object $pwaScore = this.getPwaScore();
+        result = result * PRIME + ($pwaScore == null ? 43 : $pwaScore.hashCode());
         final Object $firstMeaningfulPaint = this.getFirstMeaningfulPaint();
         result = result * PRIME + ($firstMeaningfulPaint == null ? 43 : $firstMeaningfulPaint.hashCode());
         final Object $firstContentfulPaint = this.getFirstContentfulPaint();

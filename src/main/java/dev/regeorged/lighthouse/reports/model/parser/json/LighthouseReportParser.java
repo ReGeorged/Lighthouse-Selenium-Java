@@ -1,4 +1,4 @@
-package dev.regeorged.utils.json;
+package dev.regeorged.lighthouse.reports.model.parser.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.regeorged.lighthouse.reports.model.generated.Report;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class JsonUtil {
+public class LighthouseReportParser {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static List<Report> readJsonFilesFromDirectory(String directoryPath) throws IOException {
+    public static List<Report> parseLighthouseReports(String directoryPath) throws IOException {
         Path dirPath = Paths.get(directoryPath);
         try (Stream<Path> paths = Files.walk(dirPath)) {
             return paths

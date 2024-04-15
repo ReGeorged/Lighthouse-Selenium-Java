@@ -36,6 +36,7 @@ build/
 .idea/
 /target/
 .target/
+*.report.*
 
 ### Mac OS ###
 .DS_Store

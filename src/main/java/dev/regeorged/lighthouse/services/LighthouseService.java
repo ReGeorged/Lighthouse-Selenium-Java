@@ -1,22 +1,61 @@
 package dev.regeorged.lighthouse.services;
 
+import dev.regeorged.lighthouse.reports.LighthouseReport;
+import dev.regeorged.lighthouse.reports.model.generated.Report;
+import dev.regeorged.lighthouse.reports.model.parser.json.LighthouseReportParser;
+import dev.regeorged.utils.cli.LightHouseCli;
 import org.openqa.selenium.WebDriver;
 
-import static dev.regeorged.utils.cmd.CmdUtils.executeCommand;
-import static dev.regeorged.utils.cmd.CmdUtils.executeCommandWithPatternMatch;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class LighthouseService {
 
-    public void runLighthouseReport(WebDriver driver, int debuggerPort) {
-        executeCommand(String.format("lighthouse %s  --output=json,html,csv --port=%s", driver.getCurrentUrl(), debuggerPort), true);
+    private static List<Path> lighthouseReportPaths = Collections.synchronizedList(new ArrayList<>());
+
+
+    public static LighthouseReport runLightHouse(WebDriver driver, int debuggerPort) {
+        try {
+            LightHouseCli.checkNodeIsInstalled();
+            LightHouseCli.checkLighthouseIsInstalled();
+            Path reportPath = LightHouseCli.runLightHouse(driver.getCurrentUrl(), debuggerPort);
+            lighthouseReportPaths.add(reportPath);
+            Report lighthouseReport = LighthouseReportParser.parseLastLighthouseReport(reportPath);
+            return new LighthouseReport(lighthouseReport);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to run lighthouse analysis", e);
+        }
     }
-    public void runLighthouseReport(WebDriver driver, int debuggerPort, String customArguments) {
-        executeCommand(String.format("lighthouse %s  --output=json,html,csv --port=%s %s ", driver.getCurrentUrl(), debuggerPort, customArguments), true);
+
+    public static LighthouseReport runLightHouse(WebDriver driver, int debuggerPort, String customArguments) {
+        try {
+            Path reportPath = LightHouseCli.runLightHouse(driver.getCurrentUrl(), debuggerPort, customArguments);
+            lighthouseReportPaths.add(reportPath);
+            Report lighthouseReport = LighthouseReportParser.parseLastLighthouseReport(reportPath);
+            return new LighthouseReport(lighthouseReport);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to run lighthouse analysis", e);
+        }
+
     }
-    public String runLighthouseReportWithPattern(WebDriver driver, int debuggerPort, String customArguments) {
-        return executeCommandWithPatternMatch(String.format("lighthouse %s  --output=json,html,csv --port=%s %s ", driver.getCurrentUrl(), debuggerPort, customArguments), ".*LH:Printer json output written to (.*\\.json).*",true);
+
+    public static void cleanupReports() {
+        synchronized (lighthouseReportPaths) {
+            lighthouseReportPaths.forEach(reportPath -> {
+                try {
+                    Files.deleteIfExists(reportPath);
+                    Files.deleteIfExists(Path.of(reportPath.toString().replace(".json", ".html")));
+                    Files.deleteIfExists(Path.of(reportPath.toString().replace(".json", ".csv")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            lighthouseReportPaths.clear();
+        }
     }
-    public String runLighthouseReportWithPattern(WebDriver driver, int debuggerPort) {
-        return executeCommandWithPatternMatch(String.format("lighthouse %s  --output=json,html,csv --port=%s", driver.getCurrentUrl(), debuggerPort), ".*json output written to (.*\\.json).*",true);
-    }
+
 }

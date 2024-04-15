@@ -3,7 +3,7 @@ package dev.regeorged.lighthouse.reports;
 import dev.regeorged.lighthouse.reports.model.generated.*;
 
 
-public class LighthouseResults {
+public class LighthouseReport {
 
     private Double performanceScore;
     private Double accessibilityScore;
@@ -22,7 +22,7 @@ public class LighthouseResults {
     private BootupTime bootupTime;
 
 
-    public LighthouseResults(Report lighthouseReport) {
+    public LighthouseReport(Report lighthouseReport) {
         this.performanceScore = (Double) lighthouseReport.getCategories().getPerformance().getScore();
         this.accessibilityScore = (Double) lighthouseReport.getCategories().getAccessibility().getScore();
         this.bestPracticesScore = (Double) lighthouseReport.getCategories().getBestPractices().getScore();
@@ -162,8 +162,8 @@ public class LighthouseResults {
 
     public boolean equals(final Object o) {
         if (o == this) return true;
-        if (!(o instanceof LighthouseResults)) return false;
-        final LighthouseResults other = (LighthouseResults) o;
+        if (!(o instanceof LighthouseReport)) return false;
+        final LighthouseReport other = (LighthouseReport) o;
         if (!other.canEqual((Object) this)) return false;
         final Object this$performanceScore = this.getPerformanceScore();
         final Object other$performanceScore = other.getPerformanceScore();
@@ -226,7 +226,7 @@ public class LighthouseResults {
     }
 
     protected boolean canEqual(final Object other) {
-        return other instanceof LighthouseResults;
+        return other instanceof LighthouseReport;
     }
 
     public int hashCode() {
